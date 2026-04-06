@@ -1,0 +1,314 @@
+.world-map {
+  width: 100%;
+  height: 100%;
+  background: var(--bg-paper);
+}
+
+.map-loading {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  background: var(--bg-paper);
+  color: var(--text-secondary);
+}
+
+.spinner {
+  width: 48px;
+  height: 48px;
+  border: 3px solid var(--border-color);
+  border-top-color: var(--accent-red);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Country Markers */
+.country-marker {
+  background: transparent;
+  border: none;
+}
+
+.marker-inner {
+  width: 10px;
+  height: 10px;
+  background: var(--accent-blue);
+  border-radius: 50%;
+  border: 2px solid var(--bg-paper);
+  box-shadow: 0 0 6px rgba(74, 144, 226, 0.6);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.marker-inner:hover {
+  transform: scale(1.4);
+  box-shadow: 0 0 12px rgba(74, 144, 226, 0.9);
+  background: var(--accent-gold);
+  border-color: var(--accent-gold);
+}
+
+.marker-inner.selected {
+  background: var(--accent-red);
+  transform: scale(1.2);
+  box-shadow: 0 0 12px rgba(211, 47, 47, 0.9);
+  border-color: var(--accent-red);
+}
+
+/* Related Countries Highlighting */
+.marker-inner.related-ally {
+  border-color: #4CAF50;
+  box-shadow: 0 0 8px rgba(76, 175, 80, 0.8);
+}
+
+.marker-inner.related-adversary {
+  border-color: var(--accent-red);
+  box-shadow: 0 0 8px rgba(211, 47, 47, 0.8);
+}
+
+.marker-inner.related-trade-partner {
+  border-color: var(--accent-gold);
+  box-shadow: 0 0 8px rgba(212, 175, 55, 0.8);
+}
+
+.marker-inner.related-competitor {
+  border-color: #FFC107;
+  box-shadow: 0 0 8px rgba(255, 193, 7, 0.8);
+}
+
+/* Popup */
+.popup-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+}
+
+.popup-flag {
+  width: 48px;
+  height: 32px;
+  border-radius: 2px;
+  border: 1px solid var(--border-color);
+}
+
+.popup-content strong {
+  color: var(--text-primary);
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.popup-content span {
+  color: var(--text-secondary);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.leaflet-popup-content-wrapper {
+  background: var(--bg-dark);
+  border: 1px solid var(--border-color);
+  border-radius: 0;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+}
+
+.leaflet-popup-tip {
+  background: var(--bg-dark);
+  border-color: var(--border-color);
+}
+
+.leaflet-popup-close-button {
+  color: var(--text-muted) !important;
+  font-size: 20px !important;
+  font-weight: 700 !important;
+  width: auto !important;
+  height: auto !important;
+  top: 8px !important;
+  right: 8px !important;
+  transition: color 0.15s;
+}
+
+.leaflet-popup-close-button:hover {
+  color: var(--accent-red) !important;
+}
+
+/* Bilateral Relations Lines */
+.bilateral-line {
+  filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.2));
+}
+
+.bilateral-ally {
+  filter: drop-shadow(0 0 3px rgba(76, 175, 80, 0.7));
+}
+
+.bilateral-adversary {
+  filter: drop-shadow(0 0 3px rgba(211, 47, 47, 0.7));
+}
+
+.bilateral-trade-partner {
+  filter: drop-shadow(0 0 3px rgba(212, 175, 55, 0.7));
+}
+
+.bilateral-competitor {
+  filter: drop-shadow(0 0 3px rgba(255, 193, 7, 0.7));
+}
+
+/* Military Circles */
+.military-circle {
+  transition: opacity 0.2s ease;
+}
+
+.military-circle.nuclear {
+  filter: drop-shadow(0 0 4px rgba(243, 107, 107, 0.6));
+}
+
+.military-circle.conventional {
+  filter: drop-shadow(0 0 4px rgba(78, 205, 196, 0.6));
+}
+
+/* Border Highlight */
+.border-highlight {
+  stroke: var(--accent-blue);
+  stroke-width: 2;
+  fill: none;
+  stroke-dasharray: 8, 4;
+  opacity: 0.6;
+}
+
+/* Dispute Markers */
+.dispute-marker {
+  background: rgba(211, 47, 47, 0.9);
+  border: 2px solid var(--accent-red);
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  box-shadow: 0 0 8px rgba(211, 47, 47, 0.8);
+}
+
+.dispute-marker.critical {
+  background: var(--accent-red);
+  box-shadow: 0 0 12px rgba(211, 47, 47, 1);
+}
+
+.dispute-marker.high {
+  background: var(--accent-gold);
+  border-color: var(--accent-gold);
+  box-shadow: 0 0 8px rgba(212, 175, 55, 0.8);
+}
+
+.dispute-marker.medium {
+  background: #FFC107;
+  border-color: #FFC107;
+  box-shadow: 0 0 8px rgba(255, 193, 7, 0.6);
+}
+
+/* Map Type Control */
+.map-type-control {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 999;
+  display: flex;
+  gap: 6px;
+  background: rgba(26, 26, 26, 0.95);
+  border: 1px solid var(--border-color);
+  padding: 8px;
+  border-radius: 4px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+}
+
+.map-type-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 10px;
+  background: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-radius: 2px;
+}
+
+.map-type-btn:hover {
+  border-color: var(--accent-blue);
+  color: var(--accent-blue);
+  background: rgba(74, 144, 226, 0.1);
+}
+
+.map-type-btn.active {
+  background: rgba(211, 47, 47, 0.15);
+  border-color: var(--accent-red);
+  color: var(--accent-red);
+  font-weight: 700;
+}
+
+.map-type-icon {
+  font-size: 14px;
+}
+
+.map-type-label {
+  display: none;
+}
+
+/* Show label on hover */
+.map-type-btn:hover .map-type-label,
+.map-type-btn.active .map-type-label {
+  display: inline;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .world-map {
+    height: 50%;
+  }
+
+  .map-type-control {
+    bottom: 10px;
+    gap: 4px;
+    padding: 6px;
+  }
+
+  .map-type-btn {
+    padding: 4px 8px;
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 640px) {
+  .world-map {
+    height: 50%;
+  }
+
+  .marker-inner {
+    width: 8px;
+    height: 8px;
+  }
+
+  .map-type-control {
+    bottom: 8px;
+    gap: 3px;
+    padding: 4px;
+  }
+
+  .map-type-btn {
+    padding: 3px 6px;
+    font-size: 10px;
+  }
+
+  .map-type-icon {
+    font-size: 12px;
+  }
+}

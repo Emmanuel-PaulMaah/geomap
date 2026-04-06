@@ -1,0 +1,383 @@
+/* 
+  Geopolitical Command Center - Design System Implementation
+  Based on Declassified Archive Explorer Design System
+  
+  Color Palette, Typography, Spacing, and Component Styles
+*/
+
+:root {
+  /* ===== COLOR PALETTE ===== */
+  
+  /* Backgrounds */
+  --bg-dark: #0a0a0a;          /* Main background */
+  --bg-paper: #1a1a1a;         /* Card/surface background */
+  --bg-light: #2a2a2a;         /* Input, lighter elements */
+  
+  /* Text */
+  --text-primary: #e8e8e8;     /* Main text */
+  --text-secondary: #a0a0a0;   /* Secondary text */
+  --text-muted: #707070;       /* Muted/disabled text */
+  
+  /* Accents */
+  --accent-red: #d32f2f;       /* Primary accent (alerts, CTAs) */
+  --accent-gold: #d4af37;      /* Secondary accent (badges, official) */
+  --accent-blue: #4a90e2;      /* Tertiary accent (interactive, tags) */
+  
+  /* Structure */
+  --border-color: #3a3a3a;     /* Borders and dividers */
+  
+  /* ===== TYPOGRAPHY ===== */
+  
+  --font-mono: 'IBM Plex Mono', monospace;
+  --font-serif: 'Crimson Text', serif;
+  
+  /* Type Scale */
+  --text-h1: 28px;             /* Title */
+  --text-h2: 20px;             /* Subtitle */
+  --text-h3: 18px;             /* Card Title */
+  --text-body: 15px;           /* Body */
+  --text-label: 12px;          /* Label/Badge */
+  --text-meta: 11px;           /* Metadata */
+  --text-small: 10px;          /* Small Text */
+  
+  /* Line Heights */
+  --lh-tight: 1.2;
+  --lh-normal: 1.4;
+  --lh-relaxed: 1.6;
+  
+  /* Letter Spacing */
+  --ls-tight: 0.5px;
+  --ls-normal: 1px;
+  --ls-wide: 1.5px;
+  
+  /* ===== SPACING SCALE (8px base) ===== */
+  
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-7: 32px;
+  --space-8: 40px;
+  
+  /* ===== MOTION ===== */
+  
+  --duration-fast: 0.15s;
+  --duration-medium: 0.2s;
+  --duration-slow: 0.4s;
+  
+  --easing-in: ease-in;
+  --easing-out: ease-out;
+  --easing-smooth: ease;
+}
+
+/* ===== TYPOGRAPHY RESETS ===== */
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: var(--ls-normal);
+}
+
+h1 {
+  font-size: var(--text-h1);
+  letter-spacing: var(--ls-wide);
+}
+
+h2 {
+  font-size: var(--text-h2);
+}
+
+h3 {
+  font-size: var(--text-h3);
+}
+
+p {
+  margin: 0;
+  font-size: var(--text-body);
+  line-height: var(--lh-relaxed);
+}
+
+small {
+  font-size: var(--text-meta);
+}
+
+/* ===== BUTTON STYLES ===== */
+
+.btn {
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: var(--ls-normal);
+  padding: var(--space-3) var(--space-6);
+  border: none;
+  cursor: pointer;
+  transition: all var(--duration-medium) var(--easing-smooth);
+  border-radius: 0;
+}
+
+.btn-primary {
+  background: var(--accent-red);
+  color: var(--bg-dark);
+  box-shadow: 0 4px 12px rgba(211, 47, 47, 0.3);
+}
+
+.btn-primary:hover {
+  background: #ff5252;
+  box-shadow: 0 6px 20px rgba(211, 47, 47, 0.5);
+  transform: translateY(-2px);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+.btn-secondary {
+  background: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+}
+
+.btn-secondary:hover {
+  border-color: var(--accent-red);
+  color: var(--accent-red);
+  box-shadow: inset 0 0 20px rgba(211, 47, 47, 0.1);
+}
+
+.btn-icon {
+  background: none;
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-icon:hover {
+  border-color: var(--accent-red);
+  color: var(--accent-red);
+}
+
+/* ===== FORM ELEMENTS ===== */
+
+input, select, textarea {
+  font-family: var(--font-mono);
+  background: var(--bg-light);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--text-label);
+  border-radius: 0;
+  transition: border-color var(--duration-fast);
+}
+
+input::placeholder {
+  color: var(--text-muted);
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--accent-red);
+}
+
+/* ===== CARDS & CONTAINERS ===== */
+
+.card {
+  background: var(--bg-paper);
+  border: 1px solid var(--border-color);
+  padding: var(--space-5);
+  cursor: pointer;
+  transition: all var(--duration-medium) var(--easing-out);
+}
+
+.card:hover {
+  border-color: var(--accent-red);
+  box-shadow: 0 8px 24px rgba(211, 47, 47, 0.2);
+  transform: translateY(-4px);
+}
+
+/* ===== BADGES & TAGS ===== */
+
+.badge {
+  background: rgba(212, 175, 55, 0.15);
+  color: var(--accent-gold);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  padding: var(--space-1) var(--space-2);
+  font-size: var(--text-small);
+  text-transform: uppercase;
+  letter-spacing: var(--ls-tight);
+  font-family: var(--font-mono);
+  border-radius: 0;
+  display: inline-block;
+}
+
+.tag {
+  background: rgba(211, 47, 47, 0.15);
+  border: 1px solid var(--accent-red);
+  color: var(--accent-red);
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--text-label);
+  letter-spacing: var(--ls-tight);
+  border-radius: 0;
+  display: inline-block;
+}
+
+/* ===== BORDERS & DIVIDERS ===== */
+
+.divider {
+  border-bottom: 1px solid var(--border-color);
+}
+
+.divider-accent {
+  border-bottom: 1px solid var(--accent-red);
+}
+
+.divider-thick {
+  border-bottom: 2px solid var(--accent-red);
+}
+
+/* ===== STATE & INTERACTION ===== */
+
+.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  color: var(--text-muted);
+  border-color: var(--border-color);
+}
+
+.active {
+  border-color: var(--accent-red);
+  color: var(--accent-red);
+  background: rgba(211, 47, 47, 0.1);
+}
+
+.hover-lift {
+  transition: all var(--duration-medium) var(--easing-smooth);
+}
+
+.hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+/* ===== ANIMATIONS ===== */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes cardSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn var(--duration-medium) var(--easing-out);
+}
+
+.slide-down {
+  animation: slideDown 0.6s var(--easing-out);
+}
+
+.card-slide-in {
+  animation: cardSlideIn var(--duration-slow) var(--easing-out);
+}
+
+/* ===== UTILITY CLASSES ===== */
+
+.text-primary {
+  color: var(--text-primary);
+}
+
+.text-secondary {
+  color: var(--text-secondary);
+}
+
+.text-muted {
+  color: var(--text-muted);
+}
+
+.text-accent {
+  color: var(--accent-red);
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-uppercase {
+  text-transform: uppercase;
+}
+
+.font-mono {
+  font-family: var(--font-mono);
+}
+
+.font-serif {
+  font-family: var(--font-serif);
+}
+
+.font-bold {
+  font-weight: 700;
+}
+
+.font-semibold {
+  font-weight: 600;
+}
+
+.rounded-0 {
+  border-radius: 0;
+}
+
+.rounded-sm {
+  border-radius: 2px;
+}
+
+.border {
+  border: 1px solid var(--border-color);
+}
+
+.border-accent {
+  border: 1px solid var(--accent-red);
+}
+
+.shadow-sm {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.shadow-md {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.shadow-lg {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
