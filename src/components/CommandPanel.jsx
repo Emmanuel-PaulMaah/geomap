@@ -4,6 +4,7 @@ import BilateralLegend from './BilateralLegend'
 import MilitaryLegend from './MilitaryLegend'
 import DisputeLegend from './DisputeLegend'
 import ChokePointLegend from './ChokePointLegend'
+import ShippingTrafficPanel from './ShippingTrafficPanel'
 import EnergyVisualization from './EnergyVisualization'
 import './CommandPanel.css'
 
@@ -17,6 +18,8 @@ function CommandPanel({
   showDisputes, setShowDisputes,
   showRegionalPower, setShowRegionalPower,
   showChokePoints, setShowChokePoints,
+  showChokePointTraffic, setShowChokePointTraffic,
+  selectedCountry,
   showEnergyIndependence, setShowEnergyIndependence,
   expandedSections, toggleSection, onClose,
   selectedOrganization, onClearOrganizationFilter
@@ -183,7 +186,26 @@ function CommandPanel({
                 <span className="viz-icon"><Anchor size={16} /></span>
                 Supply Chain Chokepoints
               </button>
-              {showChokePoints && <ChokePointLegend />}
+              {showChokePoints && (
+                <>
+                  <ChokePointLegend />
+                  {selectedCountry && (
+                    <button
+                      className={`traffic-toggle-btn ${showChokePointTraffic ? 'active' : ''}`}
+                      onClick={() => setShowChokePointTraffic(!showChokePointTraffic)}
+                      title={showChokePointTraffic ? 'Hide real-time traffic' : 'Show real-time traffic'}
+                    >
+                      {showChokePointTraffic ? '← Back to Info' : 'View Real-Time Traffic →'}
+                    </button>
+                  )}
+                  {showChokePointTraffic && selectedCountry && (
+                    <ShippingTrafficPanel 
+                      chokePointId={selectedCountry.cca3}
+                      chokePointName={selectedCountry.name?.common || 'Selected Area'}
+                    />
+                  )}
+                </>
+              )}
             </div>
 
             <div className="viz-button-group">

@@ -1,13 +1,10 @@
-import { useState } from 'react'
 import { Marker, Popup } from 'react-leaflet'
 import L from 'leaflet'
 import { chokePoints, chokePointRiskColor } from '../data/supplyChainChokepoints'
-import { getShippingDataForChokepoint, getTrafficTrend } from '../data/shippingData'
-import ShippingTrafficPanel from './ShippingTrafficPanel'
+import { getShippingDataForChokepoint } from '../data/shippingData'
 import './ChokePointMarkers.css'
 
 function ChokePointMarkers() {
-  const [selectedChokepoint, setSelectedChokepoint] = useState(null)
 
   return (
     <>
@@ -34,9 +31,6 @@ function ChokePointMarkers() {
             key={chokePoint.id}
             position={[chokePoint.lat, chokePoint.lng]}
             icon={icon}
-            eventHandlers={{
-              click: () => setSelectedChokepoint(chokePoint.id)
-            }}
           >
             <Popup className="chokepoint-popup">
               <div className="popup-chokepoint">
@@ -73,11 +67,10 @@ function ChokePointMarkers() {
                 </div>
                 
                 {hasShippingData && (
-                  <div className="popup-shipping">
-                    <ShippingTrafficPanel 
-                      chokePointId={chokePoint.id}
-                      chokePointName={chokePoint.name}
-                    />
+                  <div className="popup-section">
+                    <small style={{ color: 'var(--text-tertiary)' }}>
+                      💡 Tip: Click "View Real-Time Traffic" in CommandPanel to see live shipping data
+                    </small>
                   </div>
                 )}
               </div>

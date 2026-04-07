@@ -61,6 +61,7 @@ function App() {
   const [showDisputes, setShowDisputes] = useState(false)
   const [showRegionalPower, setShowRegionalPower] = useState(false)
   const [showChokePoints, setShowChokePoints] = useState(false)
+  const [showChokePointTraffic, setShowChokePointTraffic] = useState(false)
   const [showEnergyIndependence, setShowEnergyIndependence] = useState(false)
   
   // Deep Dive mode
@@ -138,6 +139,9 @@ function App() {
           setShowRegionalPower={setShowRegionalPower}
           showChokePoints={showChokePoints}
           setShowChokePoints={setShowChokePoints}
+          showChokePointTraffic={showChokePointTraffic}
+          setShowChokePointTraffic={setShowChokePointTraffic}
+          selectedCountry={selectedCountry}
           showEnergyIndependence={showEnergyIndependence}
           setShowEnergyIndependence={setShowEnergyIndependence}
           expandedSections={expandedSections}
