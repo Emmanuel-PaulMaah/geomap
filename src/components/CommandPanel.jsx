@@ -4,7 +4,6 @@ import BilateralLegend from './BilateralLegend'
 import MilitaryLegend from './MilitaryLegend'
 import DisputeLegend from './DisputeLegend'
 import ChokePointLegend from './ChokePointLegend'
-import ShippingTrafficPanel from './ShippingTrafficPanel'
 import EnergyVisualization from './EnergyVisualization'
 import './CommandPanel.css'
 
@@ -195,14 +194,8 @@ function CommandPanel({
                       onClick={() => setShowChokePointTraffic(!showChokePointTraffic)}
                       title={showChokePointTraffic ? 'Hide real-time traffic' : 'Show real-time traffic'}
                     >
-                      {showChokePointTraffic ? '← Back to Info' : 'View Real-Time Traffic →'}
+                      {showChokePointTraffic ? '← Back to Chokepoint Info' : 'View Real-Time Traffic →'}
                     </button>
-                  )}
-                  {showChokePointTraffic && selectedChokePoint && (
-                    <ShippingTrafficPanel 
-                      chokePointId={selectedChokePoint}
-                      chokePointName={selectedChokePoint}
-                    />
                   )}
                 </>
               )}

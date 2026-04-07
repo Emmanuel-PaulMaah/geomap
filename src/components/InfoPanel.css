@@ -1048,6 +1048,20 @@
   color: #FFC107;
 }
 
+/* Chokepoint Traffic Panel */
+.info-panel.chokepoint-traffic-panel {
+  padding: 16px;
+  gap: 12px;
+}
+
+.info-panel.chokepoint-traffic-panel .panel-header {
+  margin-bottom: 12px;
+}
+
+.info-panel.chokepoint-traffic-panel .panel-header h2 {
+  font-size: 16px;
+}
+
 @media (max-width: 640px) {
   .info-panel {
     width: 100%;

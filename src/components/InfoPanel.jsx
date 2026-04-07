@@ -11,9 +11,34 @@ import { getMilitaryData } from '../data/military'
 import { getCountryDisputes } from '../data/disputes'
 import { getCountryRegionalStatus, statusColor, statusDescription } from '../data/regionalPowers'
 import { getBilateralRelations } from '../data/bilateral'
+import { chokePoints } from '../data/supplyChainChokepoints'
 import CountryBio from './CountryBio'
+import ShippingTrafficPanel from './ShippingTrafficPanel'
 
-function InfoPanel({ country, onClose, countries, onCountrySelect, showResources, showTradeBlocs, showMilitary, showDisputes, showRegionalPower, showEnergyIndependence, expandedSections, toggleSection, onPanelClose, selectedOrganization, onSelectOrganization, showBilateralRelations, onDeepDive }) {
+function InfoPanel({ country, onClose, countries, onCountrySelect, showResources, showTradeBlocs, showMilitary, showDisputes, showRegionalPower, showEnergyIndependence, expandedSections, toggleSection, onPanelClose, selectedOrganization, onSelectOrganization, showBilateralRelations, onDeepDive, selectedChokePoint, showChokePointTraffic }) {
+  // Show shipping traffic if chokepoint is selected and traffic toggle is on
+  if (selectedChokePoint && showChokePointTraffic) {
+    const chokePointData = chokePoints.find(cp => cp.id === selectedChokePoint)
+    return (
+      <div className="info-panel chokepoint-traffic-panel">
+        <div className="panel-header">
+          <h2>{chokePointData?.name || 'Traffic Data'}</h2>
+          <button
+            className="close-btn"
+            onClick={onPanelClose}
+            title="Close panel"
+          >
+            <X size={18} />
+          </button>
+        </div>
+        <ShippingTrafficPanel 
+          chokePointId={selectedChokePoint}
+          chokePointName={chokePointData?.name || selectedChokePoint}
+        />
+      </div>
+    )
+  }
+
   if (!country) {
     return (
       <div className="info-panel">

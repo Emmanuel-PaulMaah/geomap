@@ -191,6 +191,8 @@ function App() {
           onSelectOrganization={setSelectedOrganization}
           showBilateralRelations={showBilateralRelations}
           onDeepDive={() => setShowDeepDive(true)}
+          selectedChokePoint={selectedChokePoint}
+          showChokePointTraffic={showChokePointTraffic}
         />
       )}
       {!showCommandPanel && (
