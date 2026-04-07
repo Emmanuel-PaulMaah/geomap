@@ -1,6 +1,7 @@
 import { getMilitaryData } from '../data/military'
 import { getCountryRegionalStatus } from '../data/regionalPowers'
 import { getCountryDisputes } from '../data/disputes'
+import ExcelJS from 'exceljs'
 
 export const buildComparisonData = (countries) => {
   return countries.map(country => ({
@@ -67,17 +68,70 @@ export const exportToCSV = (countries) => {
 }
 
 export const exportToJSON = (countries) => {
-  const data = buildComparisonData(countries)
-  const json = JSON.stringify(data, null, 2)
-  
-  // Download
-  const blob = new Blob([json], { type: 'application/json;charset=utf-8;' })
-  const link = document.createElement('a')
-  const url = URL.createObjectURL(blob)
-  link.setAttribute('href', url)
-  link.setAttribute('download', `countries_comparison_${new Date().toISOString().split('T')[0]}.json`)
-  link.style.visibility = 'hidden'
-  document.body.appendChild(link)
-  link.click()
-  document.body.removeChild(link)
-}
+   const data = buildComparisonData(countries)
+   const json = JSON.stringify(data, null, 2)
+   
+   // Download
+   const blob = new Blob([json], { type: 'application/json;charset=utf-8;' })
+   const link = document.createElement('a')
+   const url = URL.createObjectURL(blob)
+   link.setAttribute('href', url)
+   link.setAttribute('download', `countries_comparison_${new Date().toISOString().split('T')[0]}.json`)
+   link.style.visibility = 'hidden'
+   document.body.appendChild(link)
+   link.click()
+   document.body.removeChild(link)
+ }
+
+export const exportToExcel = async (countries) => {
+   const data = buildComparisonData(countries)
+   const workbook = new ExcelJS.Workbook()
+   const worksheet = workbook.addWorksheet('Country Comparison')
+   
+   if (data.length === 0) return
+   
+   // Get all keys
+   const keys = Object.keys(data[0])
+   
+   // Add header row
+   worksheet.columns = keys.map(key => ({
+     header: key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1'),
+     key: key,
+     width: 15
+   }))
+   
+   // Style header
+   worksheet.getRow(1).font = { bold: true, color: { argb: 'FFFFFFFF' } }
+   worksheet.getRow(1).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF0052CC' } }
+   worksheet.getRow(1).alignment = { horizontal: 'center', vertical: 'center' }
+   
+   // Add data rows
+   data.forEach(row => {
+     worksheet.addRow(row)
+   })
+   
+   // Auto-fit columns
+   worksheet.columns.forEach(column => {
+     let maxLength = column.header ? column.header.length : 0
+     column.eachCell({ includeEmpty: true }, cell => {
+       if (cell.value) {
+         const cellLength = String(cell.value).length
+         if (cellLength > maxLength) maxLength = cellLength
+       }
+     })
+     column.width = Math.min(maxLength + 2, 50)
+   })
+   
+   // Generate file
+   const buffer = await workbook.xlsx.writeBuffer()
+   const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' })
+   const link = document.createElement('a')
+   const url = URL.createObjectURL(blob)
+   link.setAttribute('href', url)
+   link.setAttribute('download', `countries_comparison_${new Date().toISOString().split('T')[0]}.xlsx`)
+   link.style.visibility = 'hidden'
+   document.body.appendChild(link)
+   link.click()
+   document.body.removeChild(link)
+   URL.revokeObjectURL(url)
+ }

@@ -1,26 +1,53 @@
 import './LegendCommon.css'
 
-function BilateralLegend() {
+function BilateralLegend({ bilateralRelationTypes, setBilateralRelationTypes }) {
+  const handleToggle = (type) => {
+    setBilateralRelationTypes(prev => ({
+      ...prev,
+      [type]: !prev[type]
+    }))
+  }
+
   return (
     <div className="legend-container bilateral-legend">
       <div className="legend-title">Bilateral Relations</div>
       <div className="legend-items">
-        <div className="legend-item line-legend">
+        <label className="legend-item line-legend checkbox-legend">
+          <input
+            type="checkbox"
+            checked={bilateralRelationTypes.ally}
+            onChange={() => handleToggle('ally')}
+          />
           <div className="legend-line" style={{ borderTop: '3px solid #2e7d32' }}></div>
           <span>Allies</span>
-        </div>
-        <div className="legend-item line-legend">
+        </label>
+        <label className="legend-item line-legend checkbox-legend">
+          <input
+            type="checkbox"
+            checked={bilateralRelationTypes.adversary}
+            onChange={() => handleToggle('adversary')}
+          />
           <div className="legend-line" style={{ borderTop: '3px dashed #d32f2f' }}></div>
           <span>Adversaries</span>
-        </div>
-        <div className="legend-item line-legend">
+        </label>
+        <label className="legend-item line-legend checkbox-legend">
+          <input
+            type="checkbox"
+            checked={bilateralRelationTypes['trade-partner']}
+            onChange={() => handleToggle('trade-partner')}
+          />
           <div className="legend-line" style={{ borderTop: '3px solid #ff9800' }}></div>
           <span>Trade Partners</span>
-        </div>
-        <div className="legend-item line-legend">
+        </label>
+        <label className="legend-item line-legend checkbox-legend">
+          <input
+            type="checkbox"
+            checked={bilateralRelationTypes.competitor}
+            onChange={() => handleToggle('competitor')}
+          />
           <div className="legend-line" style={{ borderTop: '3px solid #ffc107' }}></div>
           <span>Competitors</span>
-        </div>
+        </label>
       </div>
     </div>
   )

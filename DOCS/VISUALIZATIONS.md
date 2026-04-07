@@ -270,6 +270,20 @@ Planned additions to these visualizations:
 - [ ] Critical mineral dependencies (lithium, cobalt, rare earths)
 - [ ] Alternative route analysis (economic cost of detours)
 - [ ] Real-time shipping data (current traffic through chokepoints)
+  - **Data Source**: AIS (Automatic Identification System) via MarineTraffic or Spire Global API
+  - **Display**: Live ship counts per chokepoint with vessel type breakdown
+  - **Metrics**: 
+    - Current traffic density (ships per hour)
+    - Average transit time delays
+    - Vessel types (container ships, tankers, bulk carriers, RoRo)
+    - Flag state distribution (ship ownership nationalities)
+  - **Updates**: Real-time (5-15 min refresh) or historical trends (24h, 7d, 30d)
+  - **Alerts**: Anomaly detection (unusual traffic patterns, disruptions)
+  - **UI Elements**:
+    - Live counter badges on chokepoint markers
+    - Mini traffic chart per chokepoint (last 24 hours)
+    - Vessel list popover with ship details (size, cargo, origin, destination)
+    - Heatmap overlay showing congestion patterns
 
 ---
 

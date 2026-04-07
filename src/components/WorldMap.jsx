@@ -85,7 +85,7 @@ const MAP_TYPES = {
 
 function WorldMap({ 
   countries, selectedCountry, onCountrySelect, loading,
-  showBilateralRelations, showResources, showMilitary, showTradeBlocs, showDisputes,
+  showBilateralRelations, bilateralRelationTypes, showResources, showMilitary, showTradeBlocs, showDisputes,
   showChokePoints, showEnergyIndependence,
   mapType, onMapTypeChange
 }) {
@@ -135,7 +135,7 @@ function WorldMap({
       />
       <MapController center={mapCenter} zoom={mapZoom} onZoomChange={setCurrentZoom} />
       <BorderHighlight selectedCountry={selectedCountry} />
-      {showBilateralRelations && <BilateralLines countries={countries} selectedCountry={selectedCountry} />}
+      {showBilateralRelations && <BilateralLines countries={countries} selectedCountry={selectedCountry} bilateralRelationTypes={bilateralRelationTypes} />}
       {showMilitary && <MilitaryVisualization countries={countries} selectedCountry={selectedCountry} />}
       {showDisputes && <DisputeMarkers selectedCountry={selectedCountry} />}
       {showChokePoints && <ChokePointMarkers />}

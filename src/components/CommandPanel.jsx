@@ -7,9 +7,10 @@ import ChokePointLegend from './ChokePointLegend'
 import EnergyVisualization from './EnergyVisualization'
 import './CommandPanel.css'
 
-function CommandPanel({ 
+function CommandPanel({
   searchQuery, setSearchQuery, regionFilter, setRegionFilter, regions, filteredCount,
   showBilateralRelations, setShowBilateralRelations,
+  bilateralRelationTypes, setBilateralRelationTypes,
   showResources, setShowResources,
   showMilitary, setShowMilitary,
   showTradeBlocs, setShowTradeBlocs,
@@ -27,7 +28,7 @@ function CommandPanel({
         <div className="header-controls">
           <span className="badge">{filteredCount} countries</span>
           {selectedOrganization && (
-            <button 
+            <button
               className="org-filter-badge"
               onClick={onClearOrganizationFilter}
               title={`Click to clear ${selectedOrganization} filter`}
@@ -35,8 +36,8 @@ function CommandPanel({
               {selectedOrganization} ✕
             </button>
           )}
-          <button 
-            className="close-btn" 
+          <button
+            className="close-btn"
             onClick={onClose}
             title="Close panel"
           >
@@ -44,7 +45,7 @@ function CommandPanel({
           </button>
         </div>
       </div>
-      
+
       {/* Search Section */}
       <div className="search-section">
         <label>Search</label>
@@ -57,33 +58,19 @@ function CommandPanel({
       </div>
 
       {/* Filter Section */}
-      <div className="collapsible-section">
-        <button 
-          className="section-toggle"
-          onClick={() => toggleSection('filter')}
-          title={expandedSections.filter ? 'Collapse' : 'Expand'}
-        >
-          <span className="toggle-icon">
-            {expandedSections.filter ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
-          </span>
-          <span className="section-title">Region Filter</span>
-        </button>
-        {expandedSections.filter && (
-          <div className="filter-section">
-            <label>Region Filter</label>
-            <select value={regionFilter} onChange={(e) => setRegionFilter(e.target.value)}>
-              <option value="">All Regions</option>
+      <div className="filter-section">
+        <label>Region Filter</label>
+          <select value={regionFilter} onChange={(e) => setRegionFilter(e.target.value)}>
+            <option value="">All Regions</option>
               {regions.map(region => (
                 <option key={region} value={region}>{region}</option>
               ))}
             </select>
-          </div>
-        )}
       </div>
 
       {/* Commands List Section */}
       <div className="collapsible-section">
-        <button 
+        <button
           className="section-toggle"
           onClick={() => toggleSection('commands')}
           title={expandedSections.commands ? 'Collapse' : 'Expand'}
@@ -113,7 +100,7 @@ function CommandPanel({
 
       {/* Visualizations Section */}
       <div className="collapsible-section">
-        <button 
+        <button
           className="section-toggle"
           onClick={() => toggleSection('visualizations')}
           title={expandedSections.visualizations ? 'Collapse' : 'Expand'}
@@ -133,7 +120,7 @@ function CommandPanel({
                 <span className="viz-icon"><Link2 size={16} /></span>
                 Bilateral Relations
               </button>
-              {showBilateralRelations && <BilateralLegend />}
+              {showBilateralRelations && <BilateralLegend bilateralRelationTypes={bilateralRelationTypes} setBilateralRelationTypes={setBilateralRelationTypes} />}
             </div>
 
             <div className="viz-button-group">

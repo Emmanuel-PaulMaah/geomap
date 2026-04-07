@@ -1,10 +1,10 @@
 # geo-command-center
 
-a geographic command center built with react, leaflet, and vite.
+a geographic command center built with react, leaflet, & vite.
 
 ## what it does
 
-displays interactive maps and geographic data visualization using leaflet and react-leaflet. built with modern tooling for fast development and deployment.
+displays interactive maps & geographic data visualization using leaflet & react-leaflet. built with modern tooling for fast development & deployment.
 
 ## setup
 

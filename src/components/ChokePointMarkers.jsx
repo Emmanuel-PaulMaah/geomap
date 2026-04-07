@@ -1,19 +1,27 @@
+import { useState } from 'react'
 import { Marker, Popup } from 'react-leaflet'
 import L from 'leaflet'
 import { chokePoints, chokePointRiskColor } from '../data/supplyChainChokepoints'
+import { getShippingDataForChokepoint, getTrafficTrend } from '../data/shippingData'
+import ShippingTrafficPanel from './ShippingTrafficPanel'
 import './ChokePointMarkers.css'
 
 function ChokePointMarkers() {
+  const [selectedChokepoint, setSelectedChokepoint] = useState(null)
+
   return (
     <>
       {chokePoints.map(chokePoint => {
         const riskColor = chokePointRiskColor[chokePoint.riskLevel]
+        const shippingData = getShippingDataForChokepoint(chokePoint.id)
+        const hasShippingData = shippingData && shippingData.current.shipsInTransit > 0
         
         const icon = L.divIcon({
           className: 'chokepoint-marker',
           html: `
             <div class="chokepoint-inner chokepoint-${chokePoint.riskLevel}" style="border-color: ${riskColor}">
               <div class="chokepoint-dot" style="background-color: ${riskColor}"></div>
+              ${hasShippingData ? `<div class="chokepoint-badge">${shippingData.current.shipsInTransit}</div>` : ''}
             </div>
           `,
           iconSize: [24, 24],
@@ -26,6 +34,9 @@ function ChokePointMarkers() {
             key={chokePoint.id}
             position={[chokePoint.lat, chokePoint.lng]}
             icon={icon}
+            eventHandlers={{
+              click: () => setSelectedChokepoint(chokePoint.id)
+            }}
           >
             <Popup className="chokepoint-popup">
               <div className="popup-chokepoint">
@@ -60,6 +71,15 @@ function ChokePointMarkers() {
                   <strong>Alternatives:</strong>
                   <p>{chokePoint.alternatives}</p>
                 </div>
+                
+                {hasShippingData && (
+                  <div className="popup-shipping">
+                    <ShippingTrafficPanel 
+                      chokePointId={chokePoint.id}
+                      chokePointName={chokePoint.name}
+                    />
+                  </div>
+                )}
               </div>
             </Popup>
           </Marker>

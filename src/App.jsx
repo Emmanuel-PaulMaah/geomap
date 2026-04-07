@@ -4,13 +4,12 @@ import './App.css'
 import { geopoliticalData } from './data/geopolitical'
 import CommandPanel from './components/CommandPanel'
 import InfoPanel from './components/InfoPanel'
-import ComparisonPanel from './components/ComparisonPanel'
 import WorldMap from './components/WorldMap'
+import DeepDive from './components/DeepDive'
 
 function App() {
   const [countries, setCountries] = useState([])
   const [selectedCountry, setSelectedCountry] = useState(null)
-  const [comparisonCountries, setComparisonCountries] = useState([])
   const [searchQuery, setSearchQuery] = useState('')
   const [regionFilter, setRegionFilter] = useState('')
   const [loading, setLoading] = useState(true)
@@ -50,6 +49,12 @@ function App() {
   
   // Visualization layers
   const [showBilateralRelations, setShowBilateralRelations] = useState(false)
+  const [bilateralRelationTypes, setBilateralRelationTypes] = useState({
+    ally: true,
+    adversary: true,
+    'trade-partner': true,
+    competitor: true
+  })
   const [showResources, setShowResources] = useState(false)
   const [showMilitary, setShowMilitary] = useState(false)
   const [showTradeBlocs, setShowTradeBlocs] = useState(false)
@@ -57,6 +62,9 @@ function App() {
   const [showRegionalPower, setShowRegionalPower] = useState(false)
   const [showChokePoints, setShowChokePoints] = useState(false)
   const [showEnergyIndependence, setShowEnergyIndependence] = useState(false)
+  
+  // Deep Dive mode
+  const [showDeepDive, setShowDeepDive] = useState(false)
   
   // Toggle section expansion
   const toggleSection = (sectionName) => {
@@ -116,6 +124,8 @@ function App() {
           filteredCount={filteredCountries.length}
           showBilateralRelations={showBilateralRelations}
           setShowBilateralRelations={setShowBilateralRelations}
+          bilateralRelationTypes={bilateralRelationTypes}
+          setBilateralRelationTypes={setBilateralRelationTypes}
           showResources={showResources}
           setShowResources={setShowResources}
           showMilitary={showMilitary}
@@ -144,6 +154,7 @@ function App() {
            onCountrySelect={setSelectedCountry}
            loading={loading}
            showBilateralRelations={showBilateralRelations}
+           bilateralRelationTypes={bilateralRelationTypes}
            showResources={showResources}
            showMilitary={showMilitary}
            showTradeBlocs={showTradeBlocs}
@@ -154,27 +165,12 @@ function App() {
            onMapTypeChange={setMapType}
          />
        </div>
-      {showInfoPanel && comparisonCountries.length > 0 && (
-        <ComparisonPanel
-          countries={comparisonCountries}
-          onRemove={(cca3) => setComparisonCountries(comparisonCountries.filter(c => c.cca3 !== cca3))}
-          onClose={() => setComparisonCountries([])}
-          onAddCountry={(country) => {
-            if (!comparisonCountries.find(c => c.cca3 === country.cca3)) {
-              setComparisonCountries([...comparisonCountries, country])
-            }
-          }}
-          allCountries={countries}
-          onPanelClose={() => setShowInfoPanel(false)}
-        />
-      )}
-      {showInfoPanel && comparisonCountries.length === 0 && (
+      {showInfoPanel && (
         <InfoPanel 
           country={selectedCountry}
           onClose={() => setSelectedCountry(null)}
           countries={countries}
           onCountrySelect={setSelectedCountry}
-          onAddToComparison={(country) => setComparisonCountries([...comparisonCountries, country])}
           showResources={showResources}
           showTradeBlocs={showTradeBlocs}
           showMilitary={showMilitary}
@@ -186,6 +182,8 @@ function App() {
           onPanelClose={() => setShowInfoPanel(false)}
           selectedOrganization={selectedOrganization}
           onSelectOrganization={setSelectedOrganization}
+          showBilateralRelations={showBilateralRelations}
+          onDeepDive={() => setShowDeepDive(true)}
         />
       )}
       {!showCommandPanel && (
@@ -199,17 +197,25 @@ function App() {
         </button>
       )}
       {!showInfoPanel && (
-        <button 
-          className="panel-toggle panel-toggle-right" 
-          onClick={() => setShowInfoPanel(true)}
-          title="Show Info Panel"
-        >
-          <ChevronLeft size={18} />
-          <span className="toggle-label">Info</span>
-        </button>
-      )}
-    </div>
-  )
-}
+         <button 
+           className="panel-toggle panel-toggle-right" 
+           onClick={() => setShowInfoPanel(true)}
+           title="Show Info Panel"
+         >
+           <ChevronLeft size={18} />
+           <span className="toggle-label">Info</span>
+         </button>
+       )}
 
-export default App
+      {showDeepDive && selectedCountry && (
+        <DeepDive 
+          country={selectedCountry} 
+          onClose={() => setShowDeepDive(false)}
+          allCountries={countries}
+        />
+      )}
+      </div>
+      )
+      }
+
+      export default App

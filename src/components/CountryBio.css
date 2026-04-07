@@ -1,0 +1,50 @@
+.country-bio-section {
+  margin-bottom: 16px;
+}
+
+.bio-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  padding: 8px 0;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-secondary);
+  transition: color 0.2s ease;
+}
+
+.bio-toggle:hover {
+  color: var(--text-primary);
+}
+
+.bio-toggle .toggle-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  transition: color 0.2s ease;
+}
+
+.bio-toggle:hover .toggle-icon {
+  color: var(--text-primary);
+}
+
+.bio-content {
+  padding: 12px 0;
+  border-top: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
+  margin: 12px 0;
+}
+
+.bio-content p {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--text-primary);
+  margin: 0;
+  text-align: justify;
+}

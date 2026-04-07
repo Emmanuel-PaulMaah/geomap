@@ -3,7 +3,7 @@ import { useMap } from 'react-leaflet'
 import L from 'leaflet'
 import { getBilateralRelations, relationshipColors } from '../data/bilateral'
 
-function BilateralLines({ countries, selectedCountry }) {
+function BilateralLines({ countries, selectedCountry, bilateralRelationTypes }) {
   const map = useMap()
 
   useEffect(() => {
@@ -23,6 +23,12 @@ function BilateralLines({ countries, selectedCountry }) {
     // Create lines for each relation
     relations.forEach(relation => {
       const [cca3_1, cca3_2, relType, desc] = relation
+      
+      // Skip if this relation type is not selected
+      if (!bilateralRelationTypes[relType]) {
+        return
+      }
+      
       const otherCca3 = selectedCountry.cca3 === cca3_1 ? cca3_2 : cca3_1
       
       // Find the other country
@@ -65,7 +71,7 @@ function BilateralLines({ countries, selectedCountry }) {
         }
       })
     }
-  }, [selectedCountry, map, countries])
+  }, [selectedCountry, map, countries, bilateralRelationTypes])
 
   return null
 }

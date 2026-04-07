@@ -3,7 +3,10 @@ import './LegendCommon.css'
 function ChokePointLegend() {
   return (
     <div className="legend-container chokepoint-legend">
-      <div className="legend-title">Supply Chain Chokepoints</div>
+      <div className="legend-header-with-source">
+        <div className="legend-title">Supply Chain Chokepoints</div>
+        <span className="legend-data-source">IMO, World Bank</span>
+      </div>
       <div className="legend-items">
         <div className="legend-item">
           <div className="legend-color" style={{ backgroundColor: '#d32f2f' }}></div>

@@ -1,27 +1,33 @@
 import './ComparisonPanel.css'
-import { FileJson, Download, X } from 'lucide-react'
+import { FileJson, Download, X, FileSpreadsheet } from 'lucide-react'
 import { getMilitaryData } from '../data/military'
 import { getCountryRegionalStatus } from '../data/regionalPowers'
 import { getCountryDisputes } from '../data/disputes'
 import { getCountryResources } from '../data/resources'
-import { exportToCSV, exportToJSON } from '../utils/export'
+import { exportToCSV, exportToJSON, exportToExcel } from '../utils/export'
 
 function ComparisonPanel({ countries, onRemove, onClose, onAddCountry, allCountries }) {
-  if (countries.length === 0) return null
+   if (countries.length === 0) return null
 
-  const handleExport = (format) => {
-    if (format === 'csv') {
-      exportToCSV(countries)
-    } else if (format === 'json') {
-      exportToJSON(countries)
-    }
-  }
+   const handleExport = async (format) => {
+     if (format === 'csv') {
+       exportToCSV(countries)
+     } else if (format === 'json') {
+       exportToJSON(countries)
+     } else if (format === 'xlsx') {
+       await exportToExcel(countries)
+     }
+   }
 
   return (
     <div className="comparison-panel">
       <div className="comparison-header">
         <h2>Country Comparison</h2>
         <div className="comparison-controls">
+          <button className="export-btn" onClick={() => handleExport('xlsx')} title="Export as Excel">
+            <FileSpreadsheet size={14} />
+            Excel
+          </button>
           <button className="export-btn" onClick={() => handleExport('csv')} title="Export as CSV">
             <Download size={14} />
             CSV
