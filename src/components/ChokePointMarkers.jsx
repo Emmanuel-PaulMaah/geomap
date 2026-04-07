@@ -4,8 +4,7 @@ import { chokePoints, chokePointRiskColor } from '../data/supplyChainChokepoints
 import { getShippingDataForChokepoint } from '../data/shippingData'
 import './ChokePointMarkers.css'
 
-function ChokePointMarkers() {
-
+function ChokePointMarkers({ selectedChokePoint, onChokePointSelect }) {
   return (
     <>
       {chokePoints.map(chokePoint => {
@@ -31,6 +30,9 @@ function ChokePointMarkers() {
             key={chokePoint.id}
             position={[chokePoint.lat, chokePoint.lng]}
             icon={icon}
+            eventHandlers={{
+              click: () => onChokePointSelect(chokePoint.id)
+            }}
           >
             <Popup className="chokepoint-popup">
               <div className="popup-chokepoint">

@@ -61,6 +61,7 @@ function App() {
   const [showDisputes, setShowDisputes] = useState(false)
   const [showRegionalPower, setShowRegionalPower] = useState(false)
   const [showChokePoints, setShowChokePoints] = useState(false)
+  const [selectedChokePoint, setSelectedChokePoint] = useState(null)
   const [showChokePointTraffic, setShowChokePointTraffic] = useState(false)
   const [showEnergyIndependence, setShowEnergyIndependence] = useState(false)
   
@@ -139,9 +140,9 @@ function App() {
           setShowRegionalPower={setShowRegionalPower}
           showChokePoints={showChokePoints}
           setShowChokePoints={setShowChokePoints}
+          selectedChokePoint={selectedChokePoint}
           showChokePointTraffic={showChokePointTraffic}
           setShowChokePointTraffic={setShowChokePointTraffic}
-          selectedCountry={selectedCountry}
           showEnergyIndependence={showEnergyIndependence}
           setShowEnergyIndependence={setShowEnergyIndependence}
           expandedSections={expandedSections}
@@ -164,6 +165,8 @@ function App() {
            showTradeBlocs={showTradeBlocs}
            showDisputes={showDisputes}
            showChokePoints={showChokePoints}
+           selectedChokePoint={selectedChokePoint}
+           onChokePointSelect={setSelectedChokePoint}
            showEnergyIndependence={showEnergyIndependence}
            mapType={mapType}
            onMapTypeChange={setMapType}

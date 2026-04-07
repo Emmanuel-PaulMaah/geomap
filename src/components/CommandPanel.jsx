@@ -18,8 +18,8 @@ function CommandPanel({
   showDisputes, setShowDisputes,
   showRegionalPower, setShowRegionalPower,
   showChokePoints, setShowChokePoints,
+  selectedChokePoint,
   showChokePointTraffic, setShowChokePointTraffic,
-  selectedCountry,
   showEnergyIndependence, setShowEnergyIndependence,
   expandedSections, toggleSection, onClose,
   selectedOrganization, onClearOrganizationFilter
@@ -189,7 +189,7 @@ function CommandPanel({
               {showChokePoints && (
                 <>
                   <ChokePointLegend />
-                  {selectedCountry && (
+                  {selectedChokePoint && (
                     <button
                       className={`traffic-toggle-btn ${showChokePointTraffic ? 'active' : ''}`}
                       onClick={() => setShowChokePointTraffic(!showChokePointTraffic)}
@@ -198,10 +198,10 @@ function CommandPanel({
                       {showChokePointTraffic ? '← Back to Info' : 'View Real-Time Traffic →'}
                     </button>
                   )}
-                  {showChokePointTraffic && selectedCountry && (
+                  {showChokePointTraffic && selectedChokePoint && (
                     <ShippingTrafficPanel 
-                      chokePointId={selectedCountry.cca3}
-                      chokePointName={selectedCountry.name?.common || 'Selected Area'}
+                      chokePointId={selectedChokePoint}
+                      chokePointName={selectedChokePoint}
                     />
                   )}
                 </>

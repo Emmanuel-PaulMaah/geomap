@@ -86,7 +86,7 @@ const MAP_TYPES = {
 function WorldMap({ 
   countries, selectedCountry, onCountrySelect, loading,
   showBilateralRelations, bilateralRelationTypes, showResources, showMilitary, showTradeBlocs, showDisputes,
-  showChokePoints, showEnergyIndependence,
+  showChokePoints, selectedChokePoint, onChokePointSelect, showEnergyIndependence,
   mapType, onMapTypeChange
 }) {
   const [mapCenter, setMapCenter] = useState([20, 0])
@@ -138,7 +138,7 @@ function WorldMap({
       {showBilateralRelations && <BilateralLines countries={countries} selectedCountry={selectedCountry} bilateralRelationTypes={bilateralRelationTypes} />}
       {showMilitary && <MilitaryVisualization countries={countries} selectedCountry={selectedCountry} />}
       {showDisputes && <DisputeMarkers selectedCountry={selectedCountry} />}
-      {showChokePoints && <ChokePointMarkers />}
+      {showChokePoints && <ChokePointMarkers selectedChokePoint={selectedChokePoint} onChokePointSelect={onChokePointSelect} />}
       {showEnergyIndependence && <EnergyVisualization countries={countries} />}
       
       {countries.map((country) => {
