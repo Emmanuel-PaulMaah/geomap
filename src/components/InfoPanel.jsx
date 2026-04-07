@@ -39,6 +39,78 @@ function InfoPanel({ country, onClose, countries, onCountrySelect, showResources
     )
   }
 
+  // Show chokepoint info if chokepoint is selected
+  if (selectedChokePoint && !showChokePointTraffic) {
+    const chokePointData = chokePoints.find(cp => cp.id === selectedChokePoint)
+    if (!chokePointData) {
+      return (
+        <div className="info-panel">
+          <div className="empty-state">
+            <p>Chokepoint not found</p>
+          </div>
+        </div>
+      )
+    }
+
+    return (
+      <div className="info-panel">
+        <div className="panel-header">
+          <h2>{chokePointData.name}</h2>
+          <button
+            className="close-btn"
+            onClick={onPanelClose}
+            title="Clear selection"
+          >
+            <X size={18} />
+          </button>
+        </div>
+
+        <div className="chokepoint-info">
+          <div className="info-grid">
+            <div className="info-item">
+              <span className="label">World Trade</span>
+              <span className="value">{chokePointData.worldTrade}%</span>
+            </div>
+            <div className="info-item">
+              <span className="label">Type</span>
+              <span className="value">{chokePointData.type.charAt(0).toUpperCase() + chokePointData.type.slice(1)}</span>
+            </div>
+            <div className="info-item">
+              <span className="label">Risk Level</span>
+              <span className={`value risk-${chokePointData.riskLevel}`}>
+                {chokePointData.riskLevel.toUpperCase()}
+              </span>
+            </div>
+            <div className="info-item">
+              <span className="label">Country/Region</span>
+              <span className="value">{chokePointData.country}</span>
+            </div>
+          </div>
+
+          <div className="info-section">
+            <h3>Description</h3>
+            <p>{chokePointData.description}</p>
+          </div>
+
+          <div className="info-section">
+            <h3>Commodities</h3>
+            <p>{chokePointData.commodities.join(', ')}</p>
+          </div>
+
+          <div className="info-section">
+            <h3>Strategic Notes</h3>
+            <p>{chokePointData.notes}</p>
+          </div>
+
+          <div className="info-section">
+            <h3>Alternative Routes</h3>
+            <p>{chokePointData.alternatives}</p>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   if (!country) {
     return (
       <div className="info-panel">
@@ -46,7 +118,7 @@ function InfoPanel({ country, onClose, countries, onCountrySelect, showResources
           <div className="empty-icon">
             <Globe size={48} />
           </div>
-          <p>Click on a country to view details</p>
+          <p>Click on a country or chokepoint to view details</p>
         </div>
       </div>
     )

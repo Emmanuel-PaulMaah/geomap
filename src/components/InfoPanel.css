@@ -1048,6 +1048,79 @@
   color: #FFC107;
 }
 
+/* Chokepoint Info Section */
+.chokepoint-info {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.chokepoint-info .info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.chokepoint-info .info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.chokepoint-info .label {
+  font-size: 9px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-tertiary);
+}
+
+.chokepoint-info .value {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.chokepoint-info .value.risk-critical {
+  color: #d32f2f;
+}
+
+.chokepoint-info .value.risk-high {
+  color: #ff9800;
+}
+
+.chokepoint-info .value.risk-medium {
+  color: #ffc107;
+}
+
+.chokepoint-info .value.risk-low {
+  color: #4caf50;
+}
+
+.chokepoint-info .info-section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.chokepoint-info .info-section h3 {
+  margin: 0;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--accent-blue);
+}
+
+.chokepoint-info .info-section p {
+  margin: 0;
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+
 /* Chokepoint Traffic Panel */
 .info-panel.chokepoint-traffic-panel {
   padding: 16px;
