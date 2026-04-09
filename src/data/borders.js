@@ -92,11 +92,6 @@ export const borders = {
   'VNM': ['CHN', 'KHM', 'LAO'],
   'YEM': ['OMN', 'SAU'],
   'JPN': [],
-  'THA': ['KHM', 'LAO', 'MYS', 'MMR'],
-
-  // Middle East
-  'BHR': [],
-  'IRQ': ['IRN', 'JOR', 'KWT', 'SAU', 'SYR', 'TUR'],
 
   // Africa
   'DZA': ['AGO', 'BEN', 'BWA', 'BFA', 'TCD', 'EGY', 'GAB', 'GMB', 'GIN', 'GNB', 'LBY', 'MLI', 'MRT', 'MAR', 'NER', 'NGA', 'SDN', 'TUN'],

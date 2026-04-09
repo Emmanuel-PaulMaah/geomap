@@ -43,10 +43,11 @@ async function generateBios() {
     
     const bio = await fetchCountryBio(countryName);
     if (bio) {
-      bios[cca3] = bio;
-      count++;
-      process.stdout.write(`\r✓ Fetched ${count}/${countries.length} bios`);
-    }
+        bios[cca3] = bio;
+        count++;
+        // eslint-disable-next-line no-undef
+        process.stdout.write(`\r✓ Fetched ${count}/${countries.length} bios`);
+      }
     
     // Rate limiting - be respectful to Wikipedia
     await new Promise(resolve => setTimeout(resolve, 100));

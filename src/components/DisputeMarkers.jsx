@@ -63,20 +63,10 @@ function DisputeMarkers({ selectedCountry }) {
 
     // Add recent conflicts
     recentConflicts.forEach(conflict => {
-      const [lat, lng] = conflict.location
-      const isOngoing = conflict.status === 'ongoing'
+       const [lat, lng] = conflict.location
+        const isOngoing = conflict.status === 'ongoing'
 
-      const markerHtml = `
-        <div style="
-          width: 16px;
-          height: 16px;
-          background: url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22><text x=%2212%22 y=%2218%22 font-size=%2220%22 text-anchor=%22middle%22>⚔️</text></svg>');
-          background-size: contain;
-          ${isOngoing ? 'animation: pulse 1.5s infinite;' : ''}
-        "></div>
-      `
-
-      const marker = L.marker([lat, lng], {
+       const marker = L.marker([lat, lng], {
         icon: L.divIcon({
           html: isOngoing ? `<div style="font-size: 16px; animation: pulse 1.5s infinite;">⚔️</div>` : '<div style="font-size: 14px;">⚔️</div>',
           iconSize: [20, 20],

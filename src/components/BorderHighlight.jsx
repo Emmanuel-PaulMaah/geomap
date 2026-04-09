@@ -49,18 +49,20 @@ function BorderHighlight({ selectedCountry }) {
 
     borderCircle.addTo(map)
     borderCircle.bringToFront()
+    // Store reference for cleanup - this is necessary for managing map layers
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setBorderLayer(borderCircle)
 
     return () => {
       if (borderCircle) {
         try {
           map.removeLayer(borderCircle)
-        } catch (e) {
+        } catch {
           // Layer already removed
         }
       }
     }
-  }, [selectedCountry, map, borderData])
+  }, [selectedCountry, map, borderData, borderLayer])
 
   return null
 }

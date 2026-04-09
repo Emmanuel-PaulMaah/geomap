@@ -254,23 +254,23 @@ export const getMilitaryData = (cca3) => {
 }
 
 export const getNuclearPowers = () => {
-  return Object.entries(militaryData)
-    .filter(([_, data]) => data.nuclear)
-    .map(([cca3, _]) => cca3)
-}
+   return Object.entries(militaryData)
+     .filter(([, data]) => data.nuclear)
+     .map(([cca3]) => cca3)
+ }
 
-export const getTopMilitarySpenders = (limit = 15) => {
-  return Object.entries(militaryData)
-    .sort(([_, a], [__, b]) => b.spending - a.spending)
-    .slice(0, limit)
-    .map(([cca3, data]) => ({ cca3, ...data }))
-}
+ export const getTopMilitarySpenders = (limit = 15) => {
+   return Object.entries(militaryData)
+     .sort(([, a], [, b]) => b.spending - a.spending)
+     .slice(0, limit)
+     .map(([cca3, data]) => ({ cca3, ...data }))
+ }
 
-export const getMilitaryDataByRegion = (region) => {
-  return Object.entries(militaryData)
-    .filter(([_, data]) => data.region === region)
-    .map(([cca3, data]) => ({ cca3, ...data }))
-}
+ export const getMilitaryDataByRegion = (region) => {
+   return Object.entries(militaryData)
+     .filter(([, data]) => data.region === region)
+     .map(([cca3, data]) => ({ cca3, ...data }))
+ }
 
 // Get military strength score (for regional balance)
 export const getMilitaryStrengthScore = (cca3) => {

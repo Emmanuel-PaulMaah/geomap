@@ -1,7 +1,7 @@
-import { getEnergyIndependence, energyIndependenceColor, energyIndependenceLabel } from '../data/energyIndependence'
+import { getEnergyIndependence, energyIndependenceColor } from '../data/energyIndependence'
 import './LegendCommon.css'
 
-function EnergyVisualization({ countries }) {
+function EnergyVisualization() {
   return (
     <div className="legend-container energy-legend">
       <div className="legend-title">

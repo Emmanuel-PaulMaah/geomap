@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useMap } from 'react-leaflet'
 import L from 'leaflet'
-import { getMilitaryData, getNuclearPowers } from '../data/military'
+import { getMilitaryData } from '../data/military'
 
 function MilitaryVisualization({ countries, selectedCountry }) {
   const map = useMap()

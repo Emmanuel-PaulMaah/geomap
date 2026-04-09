@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { X, ChevronDown, ChevronRight, Link2, Settings, Sword, Globe, Flag, Crown, Zap, Anchor } from 'lucide-react'
 import BilateralLegend from './BilateralLegend'
 import MilitaryLegend from './MilitaryLegend'

@@ -472,10 +472,10 @@ export const energyIndependenceLabel = (score) => {
 }
 
 export const getCountriesByEnergyIndependence = (threshold) => {
-  return Object.entries(energyIndependence)
-    .filter(([_, data]) => data.overall >= threshold)
-    .map(([cca3, data]) => ({ cca3, ...data }))
-}
+   return Object.entries(energyIndependence)
+     .filter(([, data]) => data.overall >= threshold)
+     .map(([cca3, data]) => ({ cca3, ...data }))
+ }
 
 export const getEnergyMixBreakdown = (cca3) => {
   const data = getEnergyIndependence(cca3)

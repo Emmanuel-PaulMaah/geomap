@@ -83,6 +83,19 @@ function App() {
     }))
   }
 
+  // Handle country selection and clear chokepoint selection
+  const handleCountrySelect = (country) => {
+    setSelectedCountry(country)
+    setSelectedChokePoint(null)
+    setShowChokePointTraffic(false)
+  }
+
+  // Handle chokepoint selection and clear country selection
+  const handleChokePointSelect = (chokePointId) => {
+    setSelectedChokePoint(chokePointId)
+    setSelectedCountry(null)
+  }
+
   useEffect(() => {
     fetch('https://restcountries.com/v3.1/all?fields=name,cca2,cca3,region,subregion,capital,population,area,languages,latlng')
       .then(res => res.json())
@@ -156,7 +169,7 @@ function App() {
          <WorldMap 
            countries={filteredCountries}
            selectedCountry={selectedCountry}
-           onCountrySelect={setSelectedCountry}
+           onCountrySelect={handleCountrySelect}
            loading={loading}
            showBilateralRelations={showBilateralRelations}
            bilateralRelationTypes={bilateralRelationTypes}
@@ -166,7 +179,7 @@ function App() {
            showDisputes={showDisputes}
            showChokePoints={showChokePoints}
            selectedChokePoint={selectedChokePoint}
-           onChokePointSelect={setSelectedChokePoint}
+           onChokePointSelect={handleChokePointSelect}
            showEnergyIndependence={showEnergyIndependence}
            mapType={mapType}
            onMapTypeChange={setMapType}
@@ -175,9 +188,9 @@ function App() {
       {showInfoPanel && (
         <InfoPanel 
           country={selectedCountry}
-          onClose={() => setSelectedCountry(null)}
+          onClose={() => handleCountrySelect(null)}
           countries={countries}
-          onCountrySelect={setSelectedCountry}
+          onCountrySelect={handleCountrySelect}
           showResources={showResources}
           showTradeBlocs={showTradeBlocs}
           showMilitary={showMilitary}
@@ -193,6 +206,7 @@ function App() {
           onDeepDive={() => setShowDeepDive(true)}
           selectedChokePoint={selectedChokePoint}
           showChokePointTraffic={showChokePointTraffic}
+          onChokePointClose={() => handleChokePointSelect(null)}
         />
       )}
       {!showCommandPanel && (

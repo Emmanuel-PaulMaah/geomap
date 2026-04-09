@@ -1,10 +1,9 @@
 import './InfoPanel.css'
-import { X, ChevronDown, ChevronRight, Globe, AlertTriangle, Zap, Anchor } from 'lucide-react'
+import { X, ChevronDown, ChevronRight, Globe, AlertTriangle, Zap } from 'lucide-react'
 import { getCountryOrganizations, getCountryIssues } from '../data/geopolitical'
-import { getCountryFlag } from '../utils/flags'
 import { getNeighbors } from '../data/borders'
 import { getEnergyIndependence, energyIndependenceColor, energyIndependenceLabel } from '../data/energyIndependence'
-import { getCountryResources, resourceColors, hasResourceData } from '../data/resources'
+import { getCountryResources, resourceColors } from '../data/resources'
 import { getCountryTradeBlocsData } from '../data/tradeBlocs'
 import { getCountrySupplyChainRole } from '../data/supplyChains'
 import { getMilitaryData } from '../data/military'
@@ -15,7 +14,7 @@ import { chokePoints } from '../data/supplyChainChokepoints'
 import CountryBio from './CountryBio'
 import ShippingTrafficPanel from './ShippingTrafficPanel'
 
-function InfoPanel({ country, onClose, countries, onCountrySelect, showResources, showTradeBlocs, showMilitary, showDisputes, showRegionalPower, showEnergyIndependence, expandedSections, toggleSection, onPanelClose, selectedOrganization, onSelectOrganization, showBilateralRelations, onDeepDive, selectedChokePoint, showChokePointTraffic }) {
+function InfoPanel({ country, onClose, countries, onCountrySelect, showResources, showTradeBlocs, showMilitary, showDisputes, showRegionalPower, showEnergyIndependence, expandedSections, toggleSection, onPanelClose, selectedOrganization, onSelectOrganization, showBilateralRelations, onDeepDive, selectedChokePoint, showChokePointTraffic, onChokePointClose }) {
   // Show shipping traffic if chokepoint is selected and traffic toggle is on
   if (selectedChokePoint && showChokePointTraffic) {
     const chokePointData = chokePoints.find(cp => cp.id === selectedChokePoint)
@@ -58,7 +57,7 @@ function InfoPanel({ country, onClose, countries, onCountrySelect, showResources
           <h2>{chokePointData.name}</h2>
           <button
             className="close-btn"
-            onClick={onPanelClose}
+            onClick={onChokePointClose}
             title="Clear selection"
           >
             <X size={18} />

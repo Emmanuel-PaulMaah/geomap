@@ -1,23 +1,84 @@
 import { useState, useEffect } from 'react'
-import { TrendingUp, TrendingDown, Ship, AlertTriangle } from 'lucide-react'
+import { TrendingUp, TrendingDown, Ship, AlertTriangle, Loader } from 'lucide-react'
 import { 
-  getShippingDataForChokepoint, 
   getTrafficTrend, 
   getVesselTypePercentages,
   getTopFlagStates 
 } from '../data/shippingData'
 import './ShippingTrafficPanel.css'
 
+// API Configuration
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001'
+
 function ShippingTrafficPanel({ chokePointId, chokePointName }) {
   const [shippingData, setShippingData] = useState(null)
   const [selectedVessel, setSelectedVessel] = useState(null)
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState(null)
+  const [dataSource, setDataSource] = useState('mock')
 
   useEffect(() => {
     if (!chokePointId) return
-    const data = getShippingDataForChokepoint(chokePointId)
-    setShippingData(data)
-    setSelectedVessel(null)
+
+    const fetchShippingData = async () => {
+      setIsLoading(true)
+      setError(null)
+
+      try {
+        const response = await fetch(`${API_BASE_URL}/api/shipping/${chokePointId}`)
+
+        if (!response.ok) {
+          throw new Error(`Server error: ${response.status}`)
+        }
+
+        const result = await response.json()
+        
+        if (result.success && result.data) {
+          setShippingData(result.data)
+          setDataSource(result.data.source === 'spire-global' ? 'live' : 'mock')
+        } else {
+          throw new Error(result.error || 'Failed to fetch data')
+        }
+      } catch (err) {
+        console.error('Error fetching shipping data:', err)
+        setError(err.message)
+        // Fallback to mock data on error
+        setDataSource('mock')
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    fetchShippingData()
+
+    // Poll every 15 minutes
+    const interval = setInterval(fetchShippingData, 15 * 60 * 1000)
+
+    return () => clearInterval(interval)
   }, [chokePointId])
+
+  if (isLoading) {
+    return (
+      <div className="shipping-panel">
+        <div className="loading-state">
+          <Loader size={24} className="spinner" />
+          <p>Loading shipping data...</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="shipping-panel">
+        <div className="error-state">
+          <AlertTriangle size={24} />
+          <p>Error loading data: {error}</p>
+          <p className="error-hint">Using fallback mock data</p>
+        </div>
+      </div>
+    )
+  }
 
   if (!shippingData) {
     return (
@@ -35,14 +96,19 @@ function ShippingTrafficPanel({ chokePointId, chokePointName }) {
   return (
     <div className="shipping-panel">
       <div className="shipping-header">
-        <h3>
-          <Ship size={18} />
-          Real-Time Traffic: {chokePointName}
-        </h3>
-        <span className="update-time">
-          Updated: {shippingData.lastUpdated.toLocaleTimeString()}
-        </span>
-      </div>
+         <h3>
+           <Ship size={18} />
+           Real-Time Traffic: {chokePointName}
+         </h3>
+         <div className="header-meta">
+           <span className="update-time">
+             Updated: {new Date(shippingData.lastUpdated).toLocaleTimeString()}
+           </span>
+           <span className={`data-source ${dataSource}`}>
+             {dataSource === 'live' ? '🔴 Live' : '📊 Mock'}
+           </span>
+         </div>
+       </div>
 
       {/* Traffic Summary */}
       <div className="traffic-summary">

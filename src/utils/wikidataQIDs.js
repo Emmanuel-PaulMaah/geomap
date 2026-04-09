@@ -100,8 +100,8 @@ export const countryQIDs = {
   'MAC': 'Q901',
   'MNG': 'Q711',
   'DPR': 'Q423',
-  'PRT': 'Q45',
-};
+  'MKD': 'Q221',
+  };
 
 export function getCountryQID(cca3) {
   return countryQIDs[cca3] || null;

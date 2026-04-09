@@ -19,15 +19,6 @@ L.Icon.Default.mergeOptions({
   shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
 })
 
-const createCountryIcon = (isSelected) => {
-  return L.divIcon({
-    className: 'country-marker',
-    html: `<div class="marker-inner ${isSelected ? 'selected' : ''}"></div>`,
-    iconSize: [12, 12],
-    iconAnchor: [6, 6]
-  })
-}
-
 function MapController({ center, zoom, onZoomChange }) {
   const map = useMap()
   
@@ -84,10 +75,10 @@ const MAP_TYPES = {
 }
 
 function WorldMap({ 
-  countries, selectedCountry, onCountrySelect, loading,
-  showBilateralRelations, bilateralRelationTypes, showResources, showMilitary, showTradeBlocs, showDisputes,
-  showChokePoints, selectedChokePoint, onChokePointSelect, showEnergyIndependence,
-  mapType, onMapTypeChange
+   countries, selectedCountry, onCountrySelect, loading,
+   showBilateralRelations, bilateralRelationTypes, showMilitary, showDisputes,
+   showChokePoints, selectedChokePoint, onChokePointSelect, showEnergyIndependence,
+   mapType, onMapTypeChange
 }) {
   const [mapCenter, setMapCenter] = useState([20, 0])
   const [mapZoom, setMapZoom] = useState(2)
@@ -139,7 +130,7 @@ function WorldMap({
       {showMilitary && <MilitaryVisualization countries={countries} selectedCountry={selectedCountry} />}
       {showDisputes && <DisputeMarkers selectedCountry={selectedCountry} />}
       {showChokePoints && <ChokePointMarkers selectedChokePoint={selectedChokePoint} onChokePointSelect={onChokePointSelect} />}
-      {showEnergyIndependence && <EnergyVisualization countries={countries} />}
+      {showEnergyIndependence && <EnergyVisualization />}
       
       {countries.map((country) => {
         if (!country.latlng || country.latlng.length < 2) return null
@@ -147,7 +138,7 @@ function WorldMap({
         const isSelected = selectedCountry?.cca3 === country.cca3
         const markerSize = getMarkerSize(currentZoom)
         const relationshipType = relatedHelper.getRelationshipType(country.cca3)
-        const relationshipColor = relatedHelper.getRelationshipColor(country.cca3)
+        // relationshipColor is not currently used, but kept for future styling enhancements
         
         return (
           <Marker

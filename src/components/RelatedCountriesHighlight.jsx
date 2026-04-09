@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import { getBilateralRelations, relationshipColors } from '../data/bilateral'
 
-function RelatedCountriesHighlight({ selectedCountry, countries }) {
+function RelatedCountriesHighlight({ selectedCountry }) {
   const relatedCountriesMap = useMemo(() => {
     if (!selectedCountry?.cca3) return {}
     
