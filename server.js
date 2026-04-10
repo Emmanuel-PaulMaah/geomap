@@ -393,7 +393,7 @@ async function getShippingDataForChokepoint(chokePointId) {
     anomalies: detectAnomalies(vessels),
     averageTransitTime: 12 + Math.floor(Math.random() * 8),
     capturedVessels,
-    source: 'aisstream'
+    source: 'spire-global'
   }
 
   // Cache the result
