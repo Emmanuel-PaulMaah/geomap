@@ -45,7 +45,6 @@ async function generateBios() {
     if (bio) {
         bios[cca3] = bio;
         count++;
-        // eslint-disable-next-line no-undef
         process.stdout.write(`\r✓ Fetched ${count}/${countries.length} bios`);
       }
     

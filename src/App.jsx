@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { ChevronRight, ChevronLeft } from 'lucide-react'
+
 import './App.css'
 import { geopoliticalData } from './data/geopolitical'
 import CommandPanel from './components/CommandPanel'
@@ -7,30 +8,44 @@ import InfoPanel from './components/InfoPanel'
 import WorldMap from './components/WorldMap'
 import DeepDive from './components/DeepDive'
 
+import localCountries from './data/countries'
+
+function isValidCountry(country) {
+  return (
+    typeof country?.cca3 === 'string' &&
+    typeof country?.name?.common === 'string' &&
+    Array.isArray(country?.latlng) &&
+    country.latlng.length >= 2 &&
+    Number.isFinite(country.latlng[0]) &&
+    Number.isFinite(country.latlng[1])
+  )
+}
+
 function App() {
   const [countries, setCountries] = useState([])
   const [selectedCountry, setSelectedCountry] = useState(null)
   const [searchQuery, setSearchQuery] = useState('')
   const [regionFilter, setRegionFilter] = useState('')
   const [loading, setLoading] = useState(true)
-  
+  const [countriesError, setCountriesError] = useState(null)
+
   // Panel visibility
   const [showCommandPanel, setShowCommandPanel] = useState(true)
   const [showInfoPanel, setShowInfoPanel] = useState(true)
-  
+
   // Map type
   const [mapType, setMapType] = useState('dark')
-  
+
   // Organization filter
   const [selectedOrganization, setSelectedOrganization] = useState(null)
-  
+
   // Collapsible sections in CommandPanel
   const [expandedSections, setExpandedSections] = useState({
     filter: true,
     commands: false,
-    visualizations: true
+    visualizations: true,
   })
-  
+
   // Collapsible sections in InfoPanel
   const [expandedInfoSections, setExpandedInfoSections] = useState({
     geographic: true,
@@ -44,17 +59,19 @@ function App() {
     tradeBlocs: true,
     military: true,
     disputes: true,
-    regionalPower: true
+    regionalPower: true,
   })
-  
+
   // Visualization layers
   const [showBilateralRelations, setShowBilateralRelations] = useState(false)
+
   const [bilateralRelationTypes, setBilateralRelationTypes] = useState({
     ally: true,
     adversary: true,
     'trade-partner': true,
-    competitor: true
+    competitor: true,
   })
+
   const [showResources, setShowResources] = useState(false)
   const [showMilitary, setShowMilitary] = useState(false)
   const [showTradeBlocs, setShowTradeBlocs] = useState(false)
@@ -64,68 +81,85 @@ function App() {
   const [selectedChokePoint, setSelectedChokePoint] = useState(null)
   const [showChokePointTraffic, setShowChokePointTraffic] = useState(false)
   const [showEnergyIndependence, setShowEnergyIndependence] = useState(false)
-  
+
   // Deep Dive mode
   const [showDeepDive, setShowDeepDive] = useState(false)
-  
-  // Toggle section expansion
-  const toggleSection = (sectionName) => {
-    setExpandedSections(prev => ({
-      ...prev,
-      [sectionName]: !prev[sectionName]
-    }))
-  }
-  
-  const toggleInfoSection = (sectionName) => {
-    setExpandedInfoSections(prev => ({
-      ...prev,
-      [sectionName]: !prev[sectionName]
+
+  const toggleSection = sectionName => {
+    setExpandedSections(previous => ({
+      ...previous,
+      [sectionName]: !previous[sectionName],
     }))
   }
 
-  // Handle country selection and clear chokepoint selection
-  const handleCountrySelect = (country) => {
+  const toggleInfoSection = sectionName => {
+    setExpandedInfoSections(previous => ({
+      ...previous,
+      [sectionName]: !previous[sectionName],
+    }))
+  }
+
+  const handleCountrySelect = country => {
     setSelectedCountry(country)
     setSelectedChokePoint(null)
     setShowChokePointTraffic(false)
   }
 
-  // Handle chokepoint selection and clear country selection
-  const handleChokePointSelect = (chokePointId) => {
+  const handleChokePointSelect = chokePointId => {
     setSelectedChokePoint(chokePointId)
     setSelectedCountry(null)
   }
 
   useEffect(() => {
-    fetch('https://restcountries.com/v3.1/all?fields=name,cca2,cca3,region,subregion,capital,population,area,languages,latlng')
-      .then(res => res.json())
-      .then(data => {
-        setCountries(data)
-        setLoading(false)
-      })
-      .catch(err => {
-        console.error('Failed to load countries:', err)
-        setLoading(false)
-      })
-  }, [])
+  const validCountries = localCountries
+    .filter(country => {
+      const latitude = country?.latlng?.[0]
+      const longitude = country?.latlng?.[1]
 
-  const filteredCountries = Array.isArray(countries) ? countries.filter(c => {
-    const matchesSearch = c.name.common.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                          c.name.official.toLowerCase().includes(searchQuery.toLowerCase())
-    const matchesRegion = !regionFilter || c.region === regionFilter
-    
-    // Filter by organization if one is selected
+      return (
+        typeof country?.cca3 === 'string' &&
+        typeof country?.name?.common === 'string' &&
+        Number.isFinite(latitude) &&
+        Number.isFinite(longitude)
+      )
+    })
+    .sort((a, b) => a.name.common.localeCompare(b.name.common))
+
+  setCountries(validCountries)
+  setLoading(false)
+}, [])
+
+  const normalizedSearchQuery = searchQuery.trim().toLowerCase()
+
+  const filteredCountries = countries.filter(country => {
+    const commonName = country.name?.common?.toLowerCase() ?? ''
+    const officialName = country.name?.official?.toLowerCase() ?? ''
+
+    const matchesSearch =
+      commonName.includes(normalizedSearchQuery) ||
+      officialName.includes(normalizedSearchQuery)
+
+    const matchesRegion =
+      regionFilter.length === 0 || country.region === regionFilter
+
     let matchesOrganization = true
-    if (selectedOrganization) {
-      const orgKey = selectedOrganization.toLowerCase().replace(' ', '')
-      const orgMembers = geopoliticalData[orgKey] || []
-      matchesOrganization = orgMembers.includes(c.cca3)
-    }
-    
-    return matchesSearch && matchesRegion && matchesOrganization
-  }) : []
 
-  const regions = Array.isArray(countries) ? [...new Set(countries.map(c => c.region).filter(Boolean))] : []
+    if (selectedOrganization) {
+      const organizationKey = selectedOrganization
+        .toLowerCase()
+        .replace(/[^a-z0-9]/g, '')
+
+      const organizationMembers = geopoliticalData[organizationKey] ?? []
+
+      matchesOrganization = organizationMembers.includes(country.cca3)
+    }
+
+    return matchesSearch && matchesRegion && matchesOrganization
+  })
+
+  const regions = [
+    ...new Set(countries.map(country => country.region).filter(Boolean)),
+  ].sort()
 
   return (
     <div className="app-container">
@@ -165,28 +199,32 @@ function App() {
           onClearOrganizationFilter={() => setSelectedOrganization(null)}
         />
       )}
+
       <div className="map-container">
-         <WorldMap 
-           countries={filteredCountries}
-           selectedCountry={selectedCountry}
-           onCountrySelect={handleCountrySelect}
-           loading={loading}
-           showBilateralRelations={showBilateralRelations}
-           bilateralRelationTypes={bilateralRelationTypes}
-           showResources={showResources}
-           showMilitary={showMilitary}
-           showTradeBlocs={showTradeBlocs}
-           showDisputes={showDisputes}
-           showChokePoints={showChokePoints}
-           selectedChokePoint={selectedChokePoint}
-           onChokePointSelect={handleChokePointSelect}
-           showEnergyIndependence={showEnergyIndependence}
-           mapType={mapType}
-           onMapTypeChange={setMapType}
-         />
-       </div>
+        <WorldMap
+          countries={filteredCountries}
+          allCountries={countries}
+          selectedCountry={selectedCountry}
+          onCountrySelect={handleCountrySelect}
+          loading={loading}
+          error={countriesError}
+          showBilateralRelations={showBilateralRelations}
+          bilateralRelationTypes={bilateralRelationTypes}
+          showResources={showResources}
+          showMilitary={showMilitary}
+          showTradeBlocs={showTradeBlocs}
+          showDisputes={showDisputes}
+          showChokePoints={showChokePoints}
+          selectedChokePoint={selectedChokePoint}
+          onChokePointSelect={handleChokePointSelect}
+          showEnergyIndependence={showEnergyIndependence}
+          mapType={mapType}
+          onMapTypeChange={setMapType}
+        />
+      </div>
+
       {showInfoPanel && (
-        <InfoPanel 
+        <InfoPanel
           country={selectedCountry}
           onClose={() => handleCountrySelect(null)}
           countries={countries}
@@ -209,36 +247,40 @@ function App() {
           onChokePointClose={() => handleChokePointSelect(null)}
         />
       )}
+
       {!showCommandPanel && (
-        <button 
-          className="panel-toggle panel-toggle-left" 
+        <button
+          className="panel-toggle panel-toggle-left"
           onClick={() => setShowCommandPanel(true)}
           title="Show Commands Panel"
+          type="button"
         >
           <ChevronRight size={18} />
           <span className="toggle-label">Cmds</span>
         </button>
       )}
+
       {!showInfoPanel && (
-         <button 
-           className="panel-toggle panel-toggle-right" 
-           onClick={() => setShowInfoPanel(true)}
-           title="Show Info Panel"
-         >
-           <ChevronLeft size={18} />
-           <span className="toggle-label">Info</span>
-         </button>
-       )}
+        <button
+          className="panel-toggle panel-toggle-right"
+          onClick={() => setShowInfoPanel(true)}
+          title="Show Info Panel"
+          type="button"
+        >
+          <ChevronLeft size={18} />
+          <span className="toggle-label">Info</span>
+        </button>
+      )}
 
       {showDeepDive && selectedCountry && (
-        <DeepDive 
-          country={selectedCountry} 
+        <DeepDive
+          country={selectedCountry}
           onClose={() => setShowDeepDive(false)}
           allCountries={countries}
         />
       )}
-      </div>
-      )
-      }
+    </div>
+  )
+}
 
-      export default App
+export default App

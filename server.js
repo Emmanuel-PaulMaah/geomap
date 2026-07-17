@@ -59,6 +59,17 @@ let messageCount = 0
  * Receives real-time AIS vessel data globally
  */
 function initializeAISStream() {
+  const apiKey = process.env.AISSTREAM_API_KEY
+  
+  if (!apiKey) {
+    console.log('ℹ️  No AISSTREAM_API_KEY configured')
+    console.log('🔗 Get a free API key: https://aisstream.io/authenticate')
+    console.log('📄 Add to .env: AISSTREAM_API_KEY=your_key')
+    console.log('⚠️  Using mock data\n')
+    wsConnected = false
+    return
+  }
+
   console.log('🔌 Connecting to AISStream.io...')
 
   wsClient = new WebSocket(AISSTREAM_URL)
@@ -67,20 +78,6 @@ function initializeAISStream() {
     wsConnected = true
     reconnectAttempts = 0
     console.log('✅ Connected to AISStream.io WebSocket')
-
-    // Send subscription message to AISStream.io
-    // Requires API key - get free key at https://aisstream.io/authenticate
-    const apiKey = process.env.AISSTREAM_API_KEY
-    
-    if (!apiKey) {
-      console.log('ℹ️  No AISSTREAM_API_KEY configured')
-      console.log('🔗 Get a free API key: https://aisstream.io/authenticate')
-      console.log('📄 Add to .env: AISSTREAM_API_KEY=your_key')
-      console.log('⚠️  Using mock data for now\n')
-      wsConnected = false
-      wsClient.close()
-      return
-    }
 
     const subscriptionMessage = {
       APIKey: apiKey,
@@ -155,7 +152,7 @@ function initializeAISStream() {
           }
         }
       }
-    } catch (error) {
+    } catch {
       // Silently ignore parse errors (keep stream flowing)
     }
   }
@@ -700,6 +697,7 @@ app.post('/api/cache/clear', (req, res) => {
 app.get('/api/status/ws', (req, res) => {
   res.json({
     connected: wsConnected,
+    messageCount,
     reconnectAttempts,
     maxReconnectAttempts: MAX_RECONNECT_ATTEMPTS,
     vesselCounts: {

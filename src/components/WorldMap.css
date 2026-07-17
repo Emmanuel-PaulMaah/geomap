@@ -26,7 +26,9 @@
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* Country Markers */
@@ -62,7 +64,7 @@
 
 /* Related Countries Highlighting */
 .marker-inner.related-ally {
-  border-color: #4CAF50;
+  border-color: #4caf50;
   box-shadow: 0 0 8px rgba(76, 175, 80, 0.8);
 }
 
@@ -77,7 +79,7 @@
 }
 
 .marker-inner.related-competitor {
-  border-color: #FFC107;
+  border-color: #ffc107;
   box-shadow: 0 0 8px rgba(255, 193, 7, 0.8);
 }
 
@@ -204,8 +206,8 @@
 }
 
 .dispute-marker.medium {
-  background: #FFC107;
-  border-color: #FFC107;
+  background: #ffc107;
+  border-color: #ffc107;
   box-shadow: 0 0 8px rgba(255, 193, 7, 0.6);
 }
 

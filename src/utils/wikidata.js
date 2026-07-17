@@ -1,4 +1,5 @@
 // Wikidata SPARQL queries and utilities for country deep dive
+import { getCountryQID, getCountryQIDByName } from './wikidataQIDs.js'
 
 export const wikidataQueries = {
   // Get country basic info
@@ -654,4 +655,84 @@ export function formatBinding(binding) {
     }
   });
   return result;
+}
+
+// Simple in-memory cache for Wikidata results
+const wikidataCache = new Map();
+const CACHE_TTL = 30 * 60 * 1000; // 30 minutes cache duration
+
+// Search country QID dynamically via Wikidata API (with CORS support)
+async function searchCountryQID(countryName) {
+  try {
+    const url = new URL('https://www.wikidata.org/w/api.php');
+    url.searchParams.set('action', 'wbsearchentities');
+    url.searchParams.set('search', countryName);
+    url.searchParams.set('language', 'en');
+    url.searchParams.set('format', 'json');
+    url.searchParams.set('origin', '*');
+
+    const response = await fetch(url.toString());
+    const data = await response.json();
+    
+    if (data.search && data.search.length > 0) {
+      return data.search[0].id;
+    }
+    return null;
+  } catch (err) {
+    console.error(`Failed to search QID for ${countryName}:`, err);
+    return null;
+  }
+}
+
+/**
+ * Retrieve and cache custom data category from Wikidata
+ * E.g., category = 'tradeBlocs' -> returns array of organization name strings
+ */
+export async function getCachedWikidataData(countryIdentifier, category) {
+  const cacheKey = `${countryIdentifier}_${category}`;
+  const cached = wikidataCache.get(cacheKey);
+  
+  if (cached && (Date.now() - cached.timestamp < CACHE_TTL)) {
+    return cached.data;
+  }
+  
+  let qid = null;
+  if (/^Q\d+$/.test(countryIdentifier)) {
+    qid = countryIdentifier;
+  } else {
+    qid = getCountryQID(countryIdentifier) || getCountryQIDByName(countryIdentifier);
+    if (!qid) {
+      qid = await searchCountryQID(countryIdentifier);
+    }
+  }
+  
+  if (!qid) {
+    console.warn(`Could not resolve QID for country: ${countryIdentifier}`);
+    return null;
+  }
+  
+  let data = null;
+  
+  if (category === 'tradeBlocs' || category === 'organizations') {
+    const rawOrgs = await queryWikidata(wikidataQueries.organizations(qid));
+    if (rawOrgs) {
+      data = rawOrgs.map(binding => binding.orgLabel?.value).filter(Boolean);
+    }
+  } else {
+    if (wikidataQueries[category]) {
+      const rawData = await queryWikidata(wikidataQueries[category](qid));
+      if (rawData) {
+        data = rawData.map(binding => formatBinding(binding));
+      }
+    }
+  }
+  
+  if (data !== null) {
+    wikidataCache.set(cacheKey, {
+      data,
+      timestamp: Date.now()
+    });
+  }
+  
+  return data;
 }

@@ -1,5 +1,7 @@
 // Trade blocs and economic unions membership
 // Fallback data when Wikidata API unavailable
+import { getCachedWikidataData } from '../utils/wikidata'
+
 export const tradeBlocs = {
   'EU': {
     name: 'European Union',
@@ -93,7 +95,6 @@ export const getTradeBlocMembers = (blocKey) => {
 // Dynamic fetching from Wikidata with fallback
 export const getCountryTradeBlocsDataDynamic = async (countryLabel) => {
   try {
-    const { getCachedWikidataData } = await import('../utils/wikidata')
     const wikidataBlocs = await getCachedWikidataData(countryLabel, 'tradeBlocs')
     
     if (wikidataBlocs && wikidataBlocs.length > 0) {
